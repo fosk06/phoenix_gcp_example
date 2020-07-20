@@ -12,3 +12,10 @@ gcloud compute instances create hello-world-instance \
 	--service-account=ps-elixir-releases@${GCP_PROJECT}.iam.gserviceaccount.com
 
 # gcloud compute instances delete hello-world-instance --quiet
+
+# gcloud compute instances get-serial-port-output hello-world-instance \
+#   --port 1 \
+#   --zone europe-west1-c
+
+gcloud compute instances describe hello-world-instance \
+  --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
