@@ -17,5 +17,5 @@ gcloud compute instances create hello-world-instance \
 #   --port 1 \
 #   --zone europe-west1-c
 
-gcloud compute instances describe hello-world-instance \
-  --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
+# gcloud compute instances describe hello-world-instance \
+#   --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
