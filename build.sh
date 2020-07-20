@@ -1,4 +1,6 @@
 #!/bin/sh
+source .env
+
 docker build \
 	--pull \
 	--rm \

@@ -1,35 +1,35 @@
-# FROM elixir:latest as builder
-# ARG app_name
-# ARG phoenix_subdir=.
-# ARG build_env
-# ARG release_name
-# ARG secret_key_base
-# ENV MIX_ENV=${build_env} TERM=xterm SECRET_KEY_BASE=${secret_key_base}
-# WORKDIR /app
+FROM elixir:latest as builder
+ARG app_name
+ARG phoenix_subdir=.
+ARG build_env
+ARG release_name
+ARG secret_key_base
+ENV MIX_ENV=${build_env} TERM=xterm SECRET_KEY_BASE=${secret_key_base}
+WORKDIR /app
 
-# # Install dependencies
+# Install dependencies
 
-# RUN apt-get update -y \
-#     && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
-#     && apt-get install -y -q --no-install-recommends nodejs \
-#     && mix local.rebar --force \
-#     && mix local.hex --force
-# COPY . .
+RUN apt-get update -y \
+    && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get install -y -q --no-install-recommends nodejs \
+    && mix local.rebar --force \
+    && mix local.hex --force
+COPY . .
 
-# # Initial setup
-# RUN mix do deps.get --only prod, compile
+# Initial setup
+RUN mix do deps.get --only prod, compile
 
-# # Install / update  JavaScript dependencies
-# RUN npm install --prefix ./assets
+# Install / update  JavaScript dependencies
+RUN npm install --prefix ./assets
 
-# # Compile assets
-# RUN npm run deploy --prefix ./assets
-# RUN mix phx.digest
+# Compile assets
+RUN npm run deploy --prefix ./assets
+RUN mix phx.digest
 
-# # Create release 
-# RUN mix release --overwrite ${release_name}
+# Create release 
+RUN mix release --overwrite ${release_name}
 
-## Upload to cloud storage steps
+# Upload to cloud storage steps
 
 FROM gcr.io/google.com/cloudsdktool/cloud-sdk:latest
 ARG service_account_filename
@@ -37,7 +37,7 @@ ARG bucket_url
 WORKDIR /app
 
 # copy the release artifacts from the previous step
-# COPY --from=builder /app/_build/prod/*.tar.gz .
+COPY --from=builder /app/_build/prod/*.tar.gz .
 
 # copy the service account and startup script 
 COPY  ${service_account_filename} /credentials/service-account.json

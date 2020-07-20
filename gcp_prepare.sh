@@ -1,16 +1,18 @@
 #!/bin/sh
+source .env
+
 gcloud iam service-accounts create ps-elixir-releases \
---project=my-gcp-project \
+--project=${GCP_PROJECT} \
 --description="deploy elixir release" \
 --display-name="ps-elixir-releases"
 
-gcloud projects add-iam-policy-binding my-gcp-project \
---member='serviceAccount:ps-elixir-releases@my-gcp-project.iam.gserviceaccount.com' \
+gcloud projects add-iam-policy-binding ${GCP_PROJECT} \
+--member serviceAccount:ps-elixir-releases@${GCP_PROJECT}.iam.gserviceaccount.com \
 --role='roles/storage.admin'
 
 gcloud iam service-accounts add-iam-policy-binding \
-  ps-elixir-releases@my-gcp-project.iam.gserviceaccount.com \
+  ps-elixir-releases@${GCP_PROJECT}.iam.gserviceaccount.com \
   --role roles/storage.admin
 
 gcloud iam service-accounts get-iam-policy \
-ps-elixir-releases@my-gcp-project.iam.gserviceaccount.com
+ps-elixir-releases@${GCP_PROJECT}.iam.gserviceaccount.com
