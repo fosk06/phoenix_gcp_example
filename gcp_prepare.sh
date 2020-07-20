@@ -6,4 +6,4 @@ gcloud iam service-accounts create ps-elixir-releases \
 
 gcloud projects add-iam-policy-binding my-gcp-project \
 --member serviceAccount:ps-elixir-releases@my-gcp-project.iam.gserviceaccount.com \
---role roles/storage.objectAdmin
+--role roles/storage.admin
