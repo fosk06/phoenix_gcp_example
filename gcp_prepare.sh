@@ -10,9 +10,9 @@ gcloud projects add-iam-policy-binding ${GCP_PROJECT} \
 --member serviceAccount:ps-elixir-releases@${GCP_PROJECT}.iam.gserviceaccount.com \
 --role='roles/storage.admin'
 
-gcloud iam service-accounts add-iam-policy-binding \
-  ps-elixir-releases@${GCP_PROJECT}.iam.gserviceaccount.com \
-  --role roles/storage.admin
+gcloud projects add-iam-policy-binding ${GCP_PROJECT} \
+--member serviceAccount:ps-elixir-releases@${GCP_PROJECT}.iam.gserviceaccount.com \
+--role='roles/logging.logWriter'
 
 gcloud iam service-accounts get-iam-policy \
 ps-elixir-releases@${GCP_PROJECT}.iam.gserviceaccount.com
