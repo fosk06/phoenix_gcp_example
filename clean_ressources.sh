@@ -12,4 +12,3 @@ gsutil rm -r gs://ps_elixir_releases/
 
 gcloud iam service-accounts delete ps-elixir-releases \
 --project=${GCP_PROJECT}
-
